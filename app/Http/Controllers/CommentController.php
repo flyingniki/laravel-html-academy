@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
+use App\Models\Film;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -11,7 +14,7 @@ class CommentController extends Controller
      *
      * @return Responsable
      */
-    public function index()
+    public function index(Film $film)
     {
         return $this->success([]);
     }
@@ -19,9 +22,10 @@ class CommentController extends Controller
     /**
      * Добавление отзыва к фильму.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return Responsable
      */
-    public function store()
+    public function store(Request $request, Film $film)
     {
         return $this->success([], 201);
     }
@@ -29,9 +33,11 @@ class CommentController extends Controller
     /**
      * Редактирование комментария.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Comment  $comment
      * @return Responsable
      */
-    public function update()
+    public function update(Request $request, Comment $comment)
     {
         return $this->success([]);
     }
@@ -39,9 +45,10 @@ class CommentController extends Controller
     /**
      * Удаление комментария.
      *
+     * @param  \App\Models\Comment  $comment
      * @return Responsable
      */
-    public function destroy()
+    public function destroy(Comment $comment)
     {
         return $this->success([], 201);
     }

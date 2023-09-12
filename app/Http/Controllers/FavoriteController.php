@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
@@ -19,9 +22,11 @@ class FavoriteController extends Controller
     /**
      * Добавление фильма в избранное.
      *
+     * @param \Illuminate\Http\Request $request
+     * @param Film $film
      * @return Responsable
      */
-    public function store()
+    public function store(Request $request, Film $film)
     {
         return $this->success([], 201);
     }
@@ -29,9 +34,10 @@ class FavoriteController extends Controller
     /**
      * Удаление фильма из избранного.
      *
+     * @param  Film $film
      * @return Responsable
      */
-    public function destroy()
+    public function destroy(Film $film)
     {
         return $this->success([], 201);
     }

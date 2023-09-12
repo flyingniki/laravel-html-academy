@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genre;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 
 class GenreController extends Controller
@@ -19,9 +21,11 @@ class GenreController extends Controller
     /**
      * Редактирование жанра.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Genre  $genre
      * @return Responsable
      */
-    public function update()
+    public function update(Request $request, Genre $genre)
     {
         return $this->success([]);
     }

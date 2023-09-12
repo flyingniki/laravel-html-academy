@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Film;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
 
 class FilmController extends Controller
@@ -19,9 +21,10 @@ class FilmController extends Controller
     /**
      * Добавление фильма в базу.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return Responsable
      */
-    public function store()
+    public function store(Request $request)
     {
         return $this->success([], 201);
     }
@@ -29,9 +32,10 @@ class FilmController extends Controller
     /**
      * Получение информации о фильме.
      *
+     * @param  \App\Models\Film  $film
      * @return Responsable
      */
-    public function show()
+    public function show(Film $film)
     {
         return $this->success([]);
     }
@@ -39,9 +43,11 @@ class FilmController extends Controller
     /**
      * Редактирование фильма.
      *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Film  $film
      * @return Responsable
      */
-    public function update()
+    public function update(Request $request, Film $film)
     {
         return $this->success([]);
     }
@@ -49,9 +55,10 @@ class FilmController extends Controller
     /**
      * Получение списка похожих фильмов.
      *
+     * @param Film $film
      * @return \App\Http\Responses\Success
      */
-    public function similar()
+    public function similar(Film $film)
     {
         return $this->success([]);
     }

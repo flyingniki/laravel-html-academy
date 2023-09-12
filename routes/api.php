@@ -29,10 +29,10 @@ Route::post('/register', [AuthController::class, 'register'])->name('auth.regist
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::get('/films/{film}/comments', [CommentsController::class, 'index'])->name('comments.index');
-Route::post('/films/{film}/comments', [CommentsController::class, 'store'])->name('comments.store');
-Route::patch('/comments/{comment}', [CommentsController::class, 'update'])->name('comments.update');
-Route::delete('/comments/{comment}', [CommentsController::class, 'destroy'])->name('comments.destroy');
+Route::get('/films/{film}/comments', [CommentController::class, 'index'])->name('comments.index');
+Route::post('/films/{film}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::patch('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 Route::get('/favorite', [FavoriteController::class, 'index'])->name('favorite.index');
 Route::post('/films/{film}/favorite', [FavoriteController::class, 'store'])->name('favorite.store');
