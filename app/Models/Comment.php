@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
+
+    public function user()
+    {
+        $this->belongsTo(User::class);
+    }
+
+    public function film()
+    {
+        $this->belongsTo(Film::class);
+    }
 }
