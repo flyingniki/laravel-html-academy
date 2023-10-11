@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FilmsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,7 +28,7 @@ class FilmsTable extends Migration
             $table->unsignedInteger('run_time')->nullable();
             $table->unsignedInteger('released')->nullable();
             $table->boolean('promo')->default(false);
-            $table->string('status')->default(\App\Models\Film::STATUS_PENDING);
+            $table->string('status');
             $table->string('imdb_id');
             $table->timestampsTz();
         });
