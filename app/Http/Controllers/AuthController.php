@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Http\Requests\UserRequest;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -12,19 +14,33 @@ class AuthController extends Controller
      *
      * @return Responsable
      */
-    public function register()
+    public function register(UserRequest $request)
     {
-        return $this->success([], 201);
+        $params = $request->safe()->except('file');
+        $user = User::create($params);
+        $token = $user->createToken('auth-token');
+
+        return $this->success([
+            'user' => $user,
+            'token' => $token->plainTextToken,
+        ], 201);
     }
+
 
     /**
      * Авторизация и создания токена аутентификации.
      *
      * @return Responsable
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
-        return $this->success([]);
+        if (!Auth::attempt($request->validated())) {
+            abort(401, trans('auth.failed'));
+        }
+
+        $token = Auth::user()->createToken('auth-token');
+
+        return $this->success(['token' => $token->plainTextToken]);
     }
 
     /**
@@ -34,6 +50,8 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        return $this->success([], 204);
+        Auth::user()->tokens()->delete();
+
+        return $this->success(null, 204);
     }
 }
