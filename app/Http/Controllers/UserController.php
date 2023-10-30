@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -14,7 +17,7 @@ class UserController extends Controller
      */
     public function show()
     {
-        return $this->success([]);
+        return $this->success(Auth::user());
     }
 
     /**
@@ -22,8 +25,26 @@ class UserController extends Controller
      *
      * @return Responsable
      */
-    public function update()
+    public function update(UserRequest $request)
     {
-        return $this->success([]);
+        $params = $request->safe()->except('file');
+
+        $user = Auth::user();
+        $path = false;
+
+        if($request->hasFile('file')) {
+            $oldFile = $user->avatar;
+            $result = $request->file('file')->store('avatars', 'public');
+            $path = $result ? $request->file('file')->hashName() : false;
+            $params['avatar'] = $path;
+        }
+
+        $user->update($params);
+
+        if($path) {
+            Storage::disk('public')->delete($oldFile);
+        }
+
+        return $this->success(Auth::user()->makeVisible('email'));
     }
 }
