@@ -1,7 +1,8 @@
 <?php
 
+namespace App\Http\Responses;
+
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Responses\Base;
 
 class Fail extends Base
 {

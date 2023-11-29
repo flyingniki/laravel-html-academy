@@ -25,6 +25,20 @@ class PromoTest extends TestCase
     }
 
     /**
+     * Кладем в кеш заведомо не верный фильм, что бы убедиться что результат возвращается из кеша.
+     */
+    public function testGetFromCache()
+    {
+        Film::factory()->create(['promo' => true, 'updated_at' => now()]);
+        $cached = Film::factory()->create(['promo' => false, 'updated_at' => now()]);
+        cache()->forever(Film::CACHE_PROMO_KEY, $cached);
+
+        $response = $this->getJson(route('promo.show'));
+
+        $response->assertJsonFragment(['id' => $cached->id]);
+    }
+
+    /**
      * Проверка попытки изменения флага promo пользователем не модератором.
      * Ожидается ошибка авторизации, и не внесение изменений в БД.
      */
@@ -77,5 +91,21 @@ class PromoTest extends TestCase
             'id' => $film->id,
             'promo' => false,
         ]);
+    }
+
+    /**
+     * Проверка очистки кеша, при обновлении записи о промо фильме.
+     */
+    public function testFlushCacheOnUpdate()
+    {
+        cache()->forever(Film::CACHE_PROMO_KEY, 'some value');
+
+        Sanctum::actingAs(User::factory()->moderator()->create());
+
+        $film = Film::factory()->create(['promo' => false]);
+
+        $this->postJson(route('promo.store', $film), ['promo' => true]);
+
+        $this->assertNull(cache()->get(Film::CACHE_PROMO_KEY));
     }
 }

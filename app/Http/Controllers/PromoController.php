@@ -21,6 +21,8 @@ class PromoController extends Controller
     {
         $film->update(['promo' => $request->boolean('promo')]);
 
+        cache()->forget(Film::CACHE_PROMO_KEY);
+
         return $this->success(null, 201);
     }
 
@@ -31,6 +33,8 @@ class PromoController extends Controller
      */
     public function show(FilmService $service)
     {
-        return $this->success($service->getPromo());
+        $promo = cache()->remember(Film::CACHE_PROMO_KEY, now()->addDay(), fn() => $service->getPromo());
+
+        return $this->success($promo);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddFilmRequest;
+use App\Http\Requests\UpdateFilmRequest;
 use App\Models\Film;
 use App\Services\FilmService;
 use Illuminate\Contracts\Support\Responsable;
@@ -41,9 +43,14 @@ class FilmController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return Responsable
      */
-    public function store(Request $request)
+    public function store(AddFilmRequest $request)
     {
-        return $this->success([], 201);
+        Film::create([
+            'imdb_id' => $request->input('imdb'),
+            'status' => Film::STATUS_PENDING,
+        ]);
+
+        return $this->success(null, 201);
     }
 
     /**
@@ -64,8 +71,10 @@ class FilmController extends Controller
      * @param  \App\Models\Film  $film
      * @return Responsable
      */
-    public function update(Request $request, Film $film)
+    public function update(UpdateFilmRequest $request, Film $film)
     {
+        $film->update($request->validated());
+
         return $this->success([]);
     }
 

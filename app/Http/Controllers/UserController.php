@@ -41,7 +41,7 @@ class UserController extends Controller
 
         $user->update($params);
 
-        if($path) {
+        if($path && $oldFile) {
             Storage::disk('public')->delete($oldFile);
         }
 

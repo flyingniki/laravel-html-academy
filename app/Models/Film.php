@@ -16,6 +16,7 @@ class Film extends Model
     public const STATUS_ON_MODERATION = 'moderate';
     public const STATUS_READY = 'ready';
     public const LIST_FIELDS = ['films.id', 'name', 'preview_image', 'preview_video_link'];
+    public const CACHE_PROMO_KEY = 'promo';
 
     protected $with = ['genres'];
 
@@ -49,6 +50,8 @@ class Film extends Model
         'run_time',
         'released',
         'promo',
+        'status',
+        'imdb_id',
     ];
 
     public function genres(): BelongsToMany

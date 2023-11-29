@@ -2,7 +2,6 @@
 
 namespace App\Http\Responses;
 
-use Fail;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 

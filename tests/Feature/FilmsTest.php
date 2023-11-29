@@ -107,12 +107,38 @@ class FilmsTest extends TestCase
         $this->assertEquals([$film2->id, $film3->id, $film1->id], Arr::pluck($result, 'id'));
     }
 
+    /**
+     * Проверка добавления фильма.
+     */
     public function testCreateFilmRoute()
     {
-        $this->markTestSkipped('Требуется авторизация');
-        $response = $this->postJson(route('films.store'));
+        Sanctum::actingAs(User::factory()->moderator()->create());
+
+        $response = $this->postJson(route('films.store'), ['imdb' => 'tt001']);
 
         $response->assertStatus(201);
+
+        $this->assertDatabaseHas('films', [
+            'imdb_id' => 'tt001',
+            'status' => Film::STATUS_PENDING,
+        ]);
+    }
+
+    /**
+     * Ожидается ошибка валидации,
+     * в случае если фильм запрошенный к добавлению уже есть в базе.
+     */
+    public function testValidationExistsErrorForAddingFilm()
+    {
+        $film = Film::factory()->create(['imdb_id' => 'tt001']);
+
+        Sanctum::actingAs(User::factory()->moderator()->create());
+
+        $response = $this->postJson(route('films.store'), ['imdb' => $film->imdb_id]);
+
+        $response->assertStatus(422);
+        $response->assertJsonStructure(['errors' => ['imdb']]);
+        $response->assertJsonFragment(['imdb' => ['Такой фильм уже есть']]);
     }
 
     /**
@@ -154,13 +180,29 @@ class FilmsTest extends TestCase
         ]);
     }
 
+    /**
+     * Проверка обновления информации о фильме.
+     */
     public function testUpdateFilmRoute()
     {
-        $this->markTestSkipped('Требуется авторизация');
+        $film = Film::factory()->create(['imdb_id' => 'tt001', 'status' => Film::STATUS_ON_MODERATION]);
+        $new = Film::factory()->make();
 
-        $response = $this->patchJson(route('films.update', 1));
+        Sanctum::actingAs(User::factory()->moderator()->create());
+
+        $data = $new->toArray();
+        $data['id'] = $film->id;
+        $data['status'] = Film::STATUS_READY;
+
+        $response = $this->patchJson(route('films.update', $film->id), $data);
 
         $response->assertStatus(200);
+
+        $this->assertDatabaseHas('films', [
+            'id' => $film->id,
+            'status' => Film::STATUS_READY,
+            'name' => $new->name,
+        ]);
     }
 
     /**

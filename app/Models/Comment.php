@@ -18,6 +18,7 @@ class Comment extends Model
         'rating',
         'parent_id',
         'user_id',
+        'film_id',
     ];
 
     protected $visible = [
