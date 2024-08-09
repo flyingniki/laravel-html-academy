@@ -1,0 +1,24 @@
+{
+  "imdb_id": "tt2278388",
+  "name": "The Grand Budapest Hotel",
+  "desc": "In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave's friend and protege.",
+  "director": "Wes Anderson",
+  "actors": [
+    "Bill Murray",
+    "Edward Norton",
+    "Jude Law",
+    "Willem Dafoe",
+    "Saoirse Ronan"
+  ],
+  "run_time": "99",
+  "released": "2014",
+  "genres": [
+    "Adventure",
+    "Comedy"
+  ],
+  "poster": "http://academy.localhost/storage/poster/the-grand-budapest-hotel-poster.jpg",
+  "icon": "http://academy.localhost/storage/icon/the-grand-budapest-hotel-icon.jpg",
+  "background": "http://academy.localhost/storage/background/the-grand-budapest-hotel-bg.jpg",
+  "video": "http://academy.localhost/storage/video/the-grand-budapest-hotel-video.mp4",
+  "preview": "http://academy.localhost/storage/preview/the-grand-budapest-hotel-preview.mp4"
+}
